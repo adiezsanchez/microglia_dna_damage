@@ -1,0 +1,45 @@
+﻿staining_id;animal_id;sex;genotype
+34;885;male;APP/PS1
+53;885;male;APP/PS1
+23;2042;male;APP/PS1
+31;2042;male;APP/PS1
+43;2042;male;APP/PS1
+16;887;male;APP/PS1
+24;887;male;APP/PS1
+47;887;male;APP/PS1
+36;2012;male;APP/PS1
+54;2012;male;APP/PS1
+25;2014;male;APP/PS1
+51;2014;male;APP/PS1
+27;147;female;APP/PS1
+44;147;female;APP/PS1
+22;2041;female;APP/PS1
+30;2041;female;APP/PS1
+48;2041;female;APP/PS1
+17;892;female;APP/PS1
+37;892;female;APP/PS1
+39;1989;female;APP/PS1
+55;1989;female;APP/PS1
+42;2008;female;APP/PS1
+56;2008;female;APP/PS1
+35;305;male;APP/PS1 x Neil3 KO
+57;305;male;APP/PS1 x Neil3 KO
+20;1887;male;APP/PS1 x Neil3 KO
+28;1887;male;APP/PS1 x Neil3 KO
+45;1887;male;APP/PS1 x Neil3 KO
+18;231;male;APP/PS1 x Neil3 KO
+26;231;male;APP/PS1 x Neil3 KO
+49;231;male;APP/PS1 x Neil3 KO
+40;2005;male;APP/PS1 x Neil3 KO
+58;2005;male;APP/PS1 x Neil3 KO
+32;253;female;APP/PS1 x Neil3 KO
+46;253;female;APP/PS1 x Neil3 KO
+21;1891;female;APP/PS1 x Neil3 KO
+29;1891;female;APP/PS1 x Neil3 KO
+52;1891;female;APP/PS1 x Neil3 KO
+19;154;female;APP/PS1 x Neil3 KO
+38;154;female;APP/PS1 x Neil3 KO
+41;1995;female;APP/PS1 x Neil3 KO
+59;1995;female;APP/PS1 x Neil3 KO
+33;1996;female;APP/PS1 x Neil3 KO
+50;1996;female;APP/PS1 x Neil3 KO
