@@ -1,4 +1,4 @@
-﻿staining_id;animal_id;sex;genotype;dna_damage_stain_quality
+﻿staining_id;animal_id;sex;genotype;dna_damage_stain_quality_manual
 34;885;male;APP/PS1;poor
 53;885;male;APP/PS1;good
 23;2042;male;APP/PS1;good
