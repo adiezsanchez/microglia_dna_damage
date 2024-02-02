@@ -31,6 +31,7 @@ def analyze_images(
     gaussian_sigma,
     dilation_radius_nuclei,
     glia_channel_threshold,
+    dna_damage_segmenter,
 ):
     model = models.Cellpose(gpu=True, model_type="nuclei")
     stats = []
@@ -141,7 +142,7 @@ def analyze_images(
         eroded_glia_pos_nuclei = cle.erode_labels(dilated_glia_pos_nuclei, radius=1)
 
         # Apply object segmenter from APOC
-        segmenter = ObjectSegmenter(opencl_filename="./ObjectSegmenter.cl")
+        segmenter = ObjectSegmenter(opencl_filename=dna_damage_segmenter)
         dna_damage_masks = segmenter.predict(image=dna_damage_mip)
 
         # Erode dna_damage_masks to get rid of small artifacts
