@@ -9,7 +9,7 @@
 
 2. Then you will need to create a virtual environment using the following command:
 
-   <code>mamba create -n microglia devbio-napari cellpose plotly python=3.9 pyqt -c conda-forge</code>
+   <code>mamba create -n microglia python=3.9 devbio-napari cellpose pytorch torchvision plotly pyqt -c conda-forge -c pytorch</code>
 
 3. Activate it by typing in the console:
 
