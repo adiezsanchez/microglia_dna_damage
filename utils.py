@@ -10,6 +10,7 @@ from scipy.ndimage import binary_erosion, binary_dilation, label
 import pyclesperanto_prototype as cle
 from apoc import ObjectSegmenter, PixelClassifier
 import pandas as pd
+import os
 
 
 # Function to count particles in nuclei
@@ -226,15 +227,25 @@ def analyze_images(
         stats.append(stats_dict)
 
     df = pd.DataFrame(stats)
+    
+    # Define output folder for results
+    results_folder = "./results/"
+
+    # Create the necessary folder structure if it does not exist
+    try:
+        os.mkdir(str(results_folder))
+        print(f"Output folder created: {results_folder}")
+    except FileExistsError:
+        print(f"Output folder already exists: {results_folder}")
 
     if glia_segmenter:
         df.to_csv(
-            f"results_cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_dnad_obj_seg_v{dna_damage_segmenter_version}_gliaero{glia_nuclei_colocalization_erosion}_glia_sem_seg_v{glia_segmenter_version}.csv",
+            f"./results/results_cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_dnad_obj_seg_v{dna_damage_segmenter_version}_gliaero{glia_nuclei_colocalization_erosion}_glia_sem_seg_v{glia_segmenter_version}.csv",
             index=False,
         )
     else:
         df.to_csv(
-            f"results_cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_dnad_obj_seg_v{dna_damage_segmenter_version}_gliaero{glia_nuclei_colocalization_erosion}_gliathr{glia_channel_threshold}.csv",
+            f"./results/results_cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_dnad_obj_seg_v{dna_damage_segmenter_version}_gliaero{glia_nuclei_colocalization_erosion}_gliathr{glia_channel_threshold}.csv",
             index=False,
         )
 
