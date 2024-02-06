@@ -1,45 +1,45 @@
-﻿staining_id;animal_id;sex;genotype;dna_damage_stain_quality_manual
-34;885;male;APP/PS1;poor
-53;885;male;APP/PS1;good
-23;2042;male;APP/PS1;good
-31;2042;male;APP/PS1;good
-43;2042;male;APP/PS1;good
-16;887;male;APP/PS1;poor
-24;887;male;APP/PS1;good
-47;887;male;APP/PS1;good
-36;2012;male;APP/PS1;good
-54;2012;male;APP/PS1;good
-25;2014;male;APP/PS1;good
-51;2014;male;APP/PS1;good
-27;147;female;APP/PS1;poor
-44;147;female;APP/PS1;poor
-22;2041;female;APP/PS1;good
-30;2041;female;APP/PS1;good
-48;2041;female;APP/PS1;good
-17;892;female;APP/PS1;poor
-37;892;female;APP/PS1;good
-39;1989;female;APP/PS1;good
-55;1989;female;APP/PS1;good
-42;2008;female;APP/PS1;good
-56;2008;female;APP/PS1;good
-35;305;male;APP/PS1 x Neil3 KO;poor
-57;305;male;APP/PS1 x Neil3 KO;good
-20;1887;male;APP/PS1 x Neil3 KO;good
-28;1887;male;APP/PS1 x Neil3 KO;good
-45;1887;male;APP/PS1 x Neil3 KO;good
-18;231;male;APP/PS1 x Neil3 KO;poor
-26;231;male;APP/PS1 x Neil3 KO;poor
-49;231;male;APP/PS1 x Neil3 KO;poor
-40;2005;male;APP/PS1 x Neil3 KO;good
-58;2005;male;APP/PS1 x Neil3 KO;good
-32;253;female;APP/PS1 x Neil3 KO;poor
-46;253;female;APP/PS1 x Neil3 KO;poor
-21;1891;female;APP/PS1 x Neil3 KO;good
-29;1891;female;APP/PS1 x Neil3 KO;good
-52;1891;female;APP/PS1 x Neil3 KO;good
-19;154;female;APP/PS1 x Neil3 KO;poor
-38;154;female;APP/PS1 x Neil3 KO;poor
-41;1995;female;APP/PS1 x Neil3 KO;good
-59;1995;female;APP/PS1 x Neil3 KO;good
-33;1996;female;APP/PS1 x Neil3 KO;good
-50;1996;female;APP/PS1 x Neil3 KO;good
+﻿staining_id;animal_id;sex;genotype;dna_damage_stain_quality_manual;manual_qc
+34;885;male;APP/PS1;poor;passed
+53;885;male;APP/PS1;good;passed
+23;2042;male;APP/PS1;good;passed
+31;2042;male;APP/PS1;good;passed
+43;2042;male;APP/PS1;good;passed
+16;887;male;APP/PS1;poor;failed
+24;887;male;APP/PS1;good;passed
+47;887;male;APP/PS1;good;passed
+36;2012;male;APP/PS1;good;passed
+54;2012;male;APP/PS1;good;passed
+25;2014;male;APP/PS1;good;passed
+51;2014;male;APP/PS1;good;passed
+27;147;female;APP/PS1;poor;passed
+44;147;female;APP/PS1;poor;passed
+22;2041;female;APP/PS1;good;passed
+30;2041;female;APP/PS1;good;passed
+48;2041;female;APP/PS1;good;passed
+17;892;female;APP/PS1;poor;failed
+37;892;female;APP/PS1;good;passed
+39;1989;female;APP/PS1;good;passed
+55;1989;female;APP/PS1;good;passed
+42;2008;female;APP/PS1;good;passed
+56;2008;female;APP/PS1;good;passed
+35;305;male;APP/PS1 x Neil3 KO;poor;passed
+57;305;male;APP/PS1 x Neil3 KO;good;passed
+20;1887;male;APP/PS1 x Neil3 KO;good;passed
+28;1887;male;APP/PS1 x Neil3 KO;good;passed
+45;1887;male;APP/PS1 x Neil3 KO;good;passed
+18;231;male;APP/PS1 x Neil3 KO;poor;failed
+26;231;male;APP/PS1 x Neil3 KO;poor;failed
+49;231;male;APP/PS1 x Neil3 KO;poor;failed
+40;2005;male;APP/PS1 x Neil3 KO;good;passed
+58;2005;male;APP/PS1 x Neil3 KO;good;passed
+32;253;female;APP/PS1 x Neil3 KO;poor;failed
+46;253;female;APP/PS1 x Neil3 KO;poor;passed
+21;1891;female;APP/PS1 x Neil3 KO;good;passed
+29;1891;female;APP/PS1 x Neil3 KO;good;passed
+52;1891;female;APP/PS1 x Neil3 KO;good;passed
+19;154;female;APP/PS1 x Neil3 KO;poor;failed
+38;154;female;APP/PS1 x Neil3 KO;poor;failed
+41;1995;female;APP/PS1 x Neil3 KO;good;passed
+59;1995;female;APP/PS1 x Neil3 KO;good;passed
+33;1996;female;APP/PS1 x Neil3 KO;good;passed
+50;1996;female;APP/PS1 x Neil3 KO;good;passed

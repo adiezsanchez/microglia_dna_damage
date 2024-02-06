@@ -8,7 +8,7 @@ import skimage
 from skimage import measure, exposure
 from scipy.ndimage import binary_erosion, binary_dilation, label
 import pyclesperanto_prototype as cle
-from apoc import ObjectSegmenter
+from apoc import ObjectSegmenter, PixelClassifier
 import pandas as pd
 
 
@@ -32,6 +32,9 @@ def analyze_images(
     dilation_radius_nuclei,
     glia_channel_threshold,
     dna_damage_segmenter_version,
+    glia_segmenter,
+    glia_segmenter_version,
+    glia_nuclei_colocalization_erosion,
 ):
     model = models.Cellpose(gpu=True, model_type="nuclei")
     stats = []
@@ -85,8 +88,19 @@ def analyze_images(
         # Create a new array with the same shape as nuclei_masks, initialized with False
         result_array = np.full_like(nuclei_masks, False, dtype=bool)
 
-        # Find indices where values in values_array are above the threshold
-        above_threshold_indices = microglia_mip > threshold
+        if glia_segmenter:
+            # Predict glia mask using the semantic_segmenter instead of thresholding
+            segmenter = PixelClassifier(
+                opencl_filename=f"./semantic_segmenters/microglia_segmenter_v{glia_segmenter_version}.cl"
+            )
+            above_threshold_indices = segmenter.predict(image=microglia_mip)
+            # Extract ndarray from OCLArray
+            above_threshold_indices = cle.pull(above_threshold_indices)
+            # Transform into a boolean array
+            above_threshold_indices = above_threshold_indices > 1
+        else:
+            # Find indices where values in values_array are above the threshold
+            above_threshold_indices = microglia_mip > threshold
 
         # Update the corresponding positions in the result_array based on the mask_array
         nuclei_masks_bool = nuclei_masks.astype(
@@ -103,7 +117,8 @@ def analyze_images(
         # Erode binary_result_array to get rid of small nuclei pixels colocalizing with glia branches
         # Set the structuring element for erosion
         structuring_element = np.ones(
-            (5, 5), dtype=bool
+            (glia_nuclei_colocalization_erosion, glia_nuclei_colocalization_erosion),
+            dtype=bool,
         )  # You can adjust the size and shape
 
         # Perform binary erosion
@@ -212,9 +227,15 @@ def analyze_images(
 
     df = pd.DataFrame(stats)
 
-    df.to_csv(
-        f"results_cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_gliathr{glia_channel_threshold}_dnad_obj_seg_v{dna_damage_segmenter_version}.csv",
-        index=False,
-    )
+    if glia_segmenter:
+        df.to_csv(
+            f"results_cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_dnad_obj_seg_v{dna_damage_segmenter_version}_gliaero{glia_nuclei_colocalization_erosion}_glia_sem_seg_v{glia_segmenter_version}.csv",
+            index=False,
+        )
+    else:
+        df.to_csv(
+            f"results_cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_dnad_obj_seg_v{dna_damage_segmenter_version}_gliaero{glia_nuclei_colocalization_erosion}_gliathr{glia_channel_threshold}_.csv",
+            index=False,
+        )
 
     return df
