@@ -17,7 +17,15 @@ This repository provides tools in the form of interactive Jupyter notebooks to c
 
 <h3>Nuclei segmentation</h3>
 
-![nuclei_segmentation](./images/nuclei_segmentation.png)
+1. Gaussian smoothing blurs the input nuclei image so later on the Cellpose algorithm does not focus in bright spots inside the nuclei as separate objects. The amount of blurrying/smoothing can be controlled by the gaussian_sigma parameter (default = 1).
+
+![nuclei_segmentation_gs6](./images/nuclei_seg_gs1.png)
+
+The higher the values the increased chance of close sitting nuclei being detected as a single entity during Cellpose segmentation (see bright green nuclei below, gaussian_sigma = 6). On the other hand very low gaussian_sigma can result in incorrect segmentations or loss of nuclei entities. You will have to manually adjust this value according to your images.
+
+![nuclei_segmentation_gs1](./images/nuclei_seg_gs6.png)
+
+2.
 
 <h2>Environment setup instructions</h2>
 
