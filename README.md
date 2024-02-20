@@ -17,7 +17,7 @@ This repository provides tools in the form of interactive Jupyter notebooks to c
 
 <h3>Nuclei segmentation</h3>
 
-1. Gaussian smoothing blurs the input nuclei image so later on the Cellpose algorithm does not focus in bright spots inside the nuclei as separate objects. The amount of blurrying/smoothing can be controlled by the gaussian_sigma parameter (default = 1).
+1. Gaussian smoothing blurs the input nuclei image so later on the Cellpose algorithm does not focus in bright spots inside the nuclei as separate objects. The amount of blurrying/smoothing can be controlled by the <code>gaussian_sigma</code> parameter (default = 1).
 
 ![nuclei_segmentation_gs6](./images/nuclei_seg_gs1.png)
 
@@ -27,13 +27,21 @@ The higher the gaussian_sigma values the increased chance of close sitting nucle
 
 2. After gaussian smoothing a normalization step of contrast stretching is applied so Cellpose segmentation does not focus in dimmer vs more intense nuclei and misses detection of some.
 
-3. During Cellpose 2.0 nuclei segmentation you can define the cellpose_nuclei_diameter values. This value corresponds to the diameter in pixels of the nuclei present in your image. Helps Cellpose adjust nuclei mask predictions.
+3. During Cellpose 2.0 nuclei segmentation you can define the <code>cellpose_nuclei_diameter</code> values. This value corresponds to the diameter in pixels of the nuclei present in your image. Helps Cellpose adjust nuclei mask predictions.
 
-4. After nuclei prediction and using [.cle](https://github.com/clEsperanto/pyclesperanto_prototype) functions, we dilate nuclei labels to make sure the spots we want to quantify are sitting inside or touching the nuclei mask. You can define the amount of dilation by modifying the dilation_radius_nuclei value.
+4. After nuclei prediction and using [.cle](https://github.com/clEsperanto/pyclesperanto_prototype) functions, we dilate nuclei labels to make sure the spots we want to quantify are sitting inside or touching the nuclei mask. You can define the amount of dilation by modifying the <code>dilation_radius_nuclei</code> value.
 
-5. Finally a nuclei label erosion of radius 1 is performed to avoid merging touching nuclei object upon binarization (needed to check which nuclei are cell marker positive - CM+).
+5. Finally a nuclei label erosion of radius 1 is performed to avoid merging touching nuclei objects upon eventual binarization steps.
 
 <h3>Cell marker segmentation</h3>
+
+1. In order to define the cell marker mask you can follow two approaches: (1) A simple thresholding approach, where any pixel above a threshold value (<code>glia_channel_threshold</code>) is considered as positive cell marker signal. This approach works well if you have a clear staining with minimum background and not much variation of intensities across samples. (2) A pretrained [APOC-based](https://github.com/haesleinhuepf/apoc) pixel-classifier that defines what is cell marker signal and what is background. This approach works well to generalize what is cell marker signal across samples with varying levels of intensities and noise. You can train your own APOC Pixel Classifier using 0_train_glia_semantic_classifier.ipynb.
+
+2. To use the thresholding approach define the pixel value above which any signal is considered as cell marker set <code>glia_channel_threshold</code> to your desired value and set </code>glia_segmenter = False</code>.
+
+3. Alternatively, set </code>glia_segmenter = True</code> and use the pixel-classifier. Take into account that the pixel-classifier might not be as accurate (it is designed to generalize) as the thresholding method and you will need to adjust the <code>glia_nuclei_colocalization_erosion</code> value (see next steps).
+
+![cell_marker_segmentation](./images/cell_marker_seg.png)
 
 <h2>Environment setup instructions</h2>
 
