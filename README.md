@@ -13,13 +13,17 @@ This repository provides tools in the form of interactive Jupyter notebooks to c
 
 2. (Optional) Train your own Object and Pixel (semantic) APOC classifiers to detect spots and cell marker as shown in 0_train_dna_damage_segmenter.ipynb and 0_train_glia_semantic_classifier.ipynb. An example of how to do that using Napari-Assistant can be found [here](https://github.com/adiezsanchez/intestinal_organoid_brightfield_analysis/blob/main/1_train_and_setup.ipynb).
 
-3. Open 1_image_analysis.ipynb and define the analysis parameters. Here's an explanation of what each parameter means and does:
+3. Open 1_image_analysis.ipynb and define the analysis parameters. Here's an explanation of what each parameter means and does during the analysis pipeline:
+
+<h3>Nuclei segmentation</h3>
+
+![nuclei_segmentation](./images/nuclei_segmentation.png)
 
 <h2>Environment setup instructions</h2>
 
 1. In order to run these Jupyter notebooks and .py scripts you will need to familiarize yourself with the use of Python virtual environments using Mamba. See instructions [here](https://biapol.github.io/blog/mara_lampert/getting_started_with_mambaforge_and_python/readme.html).
 
-2. Then you will need to create a virtual environment using the following command or from the yml file in the envs folder (recommended, see step 3):
+2. Then you will need to create a virtual environment using the command below or from the .yml file in the envs folder (recommended, see step 3):
 
    <code>mamba create -n microglia python=3.9 devbio-napari cellpose pytorch torchvision plotly pyqt -c conda-forge -c pytorch</code>
 
