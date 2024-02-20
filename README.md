@@ -35,13 +35,21 @@ The higher the gaussian_sigma values the increased chance of close sitting nucle
 
 <h3>Cell marker segmentation</h3>
 
-1. In order to define the cell marker mask you can follow two approaches: (1) A simple thresholding approach, where any pixel above a threshold value (<code>glia_channel_threshold</code>) is considered as positive cell marker signal. This approach works well if you have a clear staining with minimum background and not much variation of intensities across samples. (2) A pretrained [APOC-based](https://github.com/haesleinhuepf/apoc) pixel-classifier that defines what is cell marker signal and what is background. This approach works well to generalize what is cell marker signal across samples with varying levels of intensities and noise. You can train your own APOC Pixel Classifier using 0_train_glia_semantic_classifier.ipynb.
+1. In order to define the cell marker mask you can follow two approaches:
 
-2. To use the thresholding approach define the pixel value above which any signal is considered as cell marker set <code>glia_channel_threshold</code> to your desired value and set </code>glia_segmenter = False</code>.
+(1) A simple thresholding approach, where any pixel above a threshold value (<code>glia_channel_threshold</code>) is considered as positive cell marker signal. This approach works well if you have a clear staining with minimum background and not much variation of intensities across samples.
 
-3. Alternatively, set </code>glia_segmenter = True</code> and use the pixel-classifier. Take into account that the pixel-classifier might not be as accurate (it is designed to generalize) as the thresholding method and you will need to adjust the <code>glia_nuclei_colocalization_erosion</code> value (see next steps).
+(2) A pretrained [APOC-based](https://github.com/haesleinhuepf/apoc) pixel-classifier that defines what is cell marker signal and what is background. This approach works well to generalize what is cell marker signal across samples with varying levels of intensities and noise. You can train your own APOC Pixel Classifier using 0_train_glia_semantic_classifier.ipynb.
 
-![cell_marker_segmentation](./images/cell_marker_seg.png)
+2. To use the thresholding approach define the pixel value above which any signal is considered as cell marker set <code>glia_channel_threshold</code> to your desired value and set <code>glia_segmenter = False</code>.
+
+3. Alternatively, set <code>glia_segmenter = True</code> and use the pixel-classifier. Take into account that the pixel-classifier might not be as accurate (it is designed to generalize) as the thresholding method and you will need to adjust the <code>glia_nuclei_colocalization_erosion</code> value (see next steps).
+
+![cell_marker_segmentation](./images/cell_marker_segmentation.png)
+
+<h3>Cell Marker+ (CM+) nuclei definition</h3>
+
+<h3>Spot detection</h3>
 
 <h2>Environment setup instructions</h2>
 
