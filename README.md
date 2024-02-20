@@ -21,11 +21,19 @@ This repository provides tools in the form of interactive Jupyter notebooks to c
 
 ![nuclei_segmentation_gs6](./images/nuclei_seg_gs1.png)
 
-The higher the values the increased chance of close sitting nuclei being detected as a single entity during Cellpose segmentation (see bright green nuclei below, gaussian_sigma = 6). On the other hand very low gaussian_sigma can result in incorrect segmentations or loss of nuclei entities. You will have to manually adjust this value according to your images.
+The higher the gaussian_sigma values the increased chance of close sitting nuclei being detected as a single entity during Cellpose segmentation (see bright green nuclei below, gaussian_sigma = 6). On the other hand very low gaussian_sigma can result in incorrect segmentations or loss of nuclei entities. You will have to manually adjust this value according to your images.
 
 ![nuclei_segmentation_gs1](./images/nuclei_seg_gs6.png)
 
-2.
+2. After gaussian smoothing a normalization step of contrast stretching is applied so Cellpose segmentation does not focus in dimmer vs more intense nuclei and misses detection of some.
+
+3. During Cellpose 2.0 nuclei segmentation you can define the cellpose_nuclei_diameter values. This value corresponds to the diameter in pixels of the nuclei present in your image. Helps Cellpose adjust nuclei mask predictions.
+
+4. After nuclei prediction and using [.cle](https://github.com/clEsperanto/pyclesperanto_prototype) functions, we dilate nuclei labels to make sure the spots we want to quantify are sitting inside or touching the nuclei mask. You can define the amount of dilation by modifying the dilation_radius_nuclei value.
+
+5. Finally a nuclei label erosion of radius 1 is performed to avoid merging touching nuclei object upon binarization (needed to check which nuclei are cell marker positive - CM+).
+
+<h3>Cell marker segmentation</h3>
 
 <h2>Environment setup instructions</h2>
 
