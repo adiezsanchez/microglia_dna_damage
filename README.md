@@ -1,4 +1,11 @@
-<h1>DNA damage assesment in microglia</h1>
+<h1>Counting Of Spots in Marker Indicator Cells (COSMIC)</h1>
+
+[![License](https://img.shields.io/pypi/l/napari-accelerated-pixel-and-object-classification.svg?color=green)](https://github.com/adiezsanchez/intestinal_organoid_yolov8/blob/main/LICENSE)
+[![Development Status](https://img.shields.io/pypi/status/napari-accelerated-pixel-and-object-classification.svg)](https://en.wikipedia.org/wiki/Software_release_life_cycle#Alpha)
+
+![workflow](./images/workflow.png)
+
+This repository provides tools in the form of interactive Jupyter notebooks to count spots inside nuclei of cell marker positive and total cells.
 
 [![License](https://img.shields.io/pypi/l/napari-accelerated-pixel-and-object-classification.svg?color=green)](https://github.com/adiezsanchez/intestinal_organoid_brightfield_analysis/blob/main/LICENSE)
 [![Development Status](https://img.shields.io/pypi/status/napari-accelerated-pixel-and-object-classification.svg)](https://en.wikipedia.org/wiki/Software_release_life_cycle#Alpha)
