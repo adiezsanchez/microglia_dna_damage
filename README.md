@@ -37,9 +37,9 @@ The higher the gaussian_sigma values the increased chance of close sitting nucle
 
 1. In order to define the cell marker mask you can follow two approaches:
 
-(1) A simple thresholding approach, where any pixel above a threshold value (<code>glia_channel_threshold</code>) is considered as positive cell marker signal. This approach works well if you have a clear staining with minimum background and not much variation of intensities across samples.
+- A simple thresholding approach, where any pixel above a threshold value (<code>glia_channel_threshold</code>) is considered as positive cell marker signal. This approach works well if you have a clear staining with minimum background and not much variation of intensities across samples.
 
-(2) A pretrained [APOC-based](https://github.com/haesleinhuepf/apoc) pixel-classifier that defines what is cell marker signal and what is background. This approach works well to generalize what is cell marker signal across samples with varying levels of intensities and noise. You can train your own APOC Pixel Classifier using 0_train_glia_semantic_classifier.ipynb.
+- A pretrained [APOC-based](https://github.com/haesleinhuepf/apoc) pixel-classifier that defines what is cell marker signal and what is background. This approach works well to generalize what is cell marker signal across samples with varying levels of intensities and noise. You can train your own APOC Pixel Classifier using 0_train_glia_semantic_classifier.ipynb.
 
 2. To use the thresholding approach define the pixel value above which any signal is considered as cell marker set <code>glia_channel_threshold</code> to your desired value and set <code>glia_segmenter = False</code>.
 
@@ -48,6 +48,12 @@ The higher the gaussian_sigma values the increased chance of close sitting nucle
 ![cell_marker_segmentation](./images/cell_marker_segmentation.png)
 
 <h3>Cell Marker+ (CM+) nuclei definition</h3>
+
+1. Once you have decided on a method for cell marker segmentation you would have obtained a Cell Marker + nuclei colocalization mask defining the areas of the image where the cell marker signal is sitting on top of a nuclei.
+
+2. In the case of microglia and astrocytic cells (our example) there are cell protrusions that might sit on top of a nuclei that does not correspond to a Cell Marker positive cell (since our input image is a stack from multiple planes that is flattened via maximum intensity projection). In order to get rid of those unwanted regions we perform an erosion of the colocalization mask. The erosion extent is defined by the <code>glia_nuclei_colocalization_erosion</code> variable. The higher the value, the stricter the conditions to consider a nuclei as CM+. Too high values will result in the complete absence of CM+ nuclei.
+
+3. Once the erosion operation is complete we check which Cellpose 2.0 detected nuclei objects sit on top of the eroded colocalization mask and mark those as CM+ nuclei. Afterwards we perform the same nuclei dilation and erosion steps defined in the Nuclei segmentation section.
 
 <h3>Spot detection</h3>
 
