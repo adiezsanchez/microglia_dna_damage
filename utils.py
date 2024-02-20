@@ -163,7 +163,7 @@ def analyze_images(
 
             # Dilate processed_regions to make sure the dna_damage_foci objects sit inside
             dilated_glia_pos_nuclei = cle.dilate_labels(
-                processed_region_labels, radius=3
+                processed_region_labels, radius=dilation_radius_nuclei
             )
             # Erode processed_regions to obtain separate objects upon binarization
             eroded_glia_pos_nuclei = cle.erode_labels(dilated_glia_pos_nuclei, radius=1)
