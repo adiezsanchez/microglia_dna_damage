@@ -7,13 +7,13 @@ This repository provides tools in the form of interactive Jupyter notebooks to c
 
 ![workflow](./images/workflow.png)
 
-<h2>Instructions</h2>
+<h2>Image Analysis Instructions</h2>
 
 1. Create a raw_data directory inside the microglia_dna_damage folder to store all of your acquired images. In our case .lsm files acquired with a Zeiss microscope. This particular tools works with 3-channel images but is easy to adapt to multiple channels.
 
-2. (Optional) Train your own Object and Pixel (semantic) [APOC classifiers](https://github.com/haesleinhuepf/apoc) to detect spots and cell marker as shown in 0_train_dna_damage_segmenter.ipynb and 0_train_glia_semantic_classifier.ipynb. An example of how to do that using Napari-Assistant can be found [here](https://github.com/adiezsanchez/intestinal_organoid_brightfield_analysis/blob/main/1_train_and_setup.ipynb).
+2. (Optional) Train your own Object and Pixel (semantic) [APOC classifiers](https://github.com/haesleinhuepf/apoc) to detect spots and cell marker as shown in <code>0_train_dna_damage_segmenter.ipynb</code> and <code>0_train_glia_semantic_classifier.ipynb</code>. An example of how to do that using Napari-Assistant can be found [here](https://github.com/adiezsanchez/intestinal_organoid_brightfield_analysis/blob/main/1_train_and_setup.ipynb).
 
-3. Open 1_image_analysis.ipynb and define the analysis parameters. Here's an explanation of what each parameter means and does during the analysis pipeline:
+3. Open <code>1_image_analysis.ipynb</code> and define the analysis parameters. Here's an explanation of what each parameter means and does during the analysis pipeline:
 
 <h3>Nuclei segmentation</h3>
 
@@ -39,7 +39,7 @@ The higher the gaussian_sigma values the increased chance of close sitting nucle
 
 - A simple thresholding approach, where any pixel above a threshold value (<code>glia_channel_threshold</code>) is considered as positive cell marker signal. This approach works well if you have a clear staining with minimum background and not much variation of intensities across samples.
 
-- A pretrained [APOC-based](https://github.com/haesleinhuepf/apoc) pixel-classifier that defines what is cell marker signal and what is background. This approach works well to generalize what is cell marker signal across samples with varying levels of intensities and noise. You can train your own APOC Pixel Classifier using 0_train_glia_semantic_classifier.ipynb.
+- A pretrained [APOC-based](https://github.com/haesleinhuepf/apoc) pixel-classifier that defines what is cell marker signal and what is background. This approach works well to generalize what is cell marker signal across samples with varying levels of intensities and noise. You can train your own APOC Pixel Classifier using <code>0_train_glia_semantic_classifier.ipynb</code>.
 
 2. To use the thresholding approach define the pixel value above which any signal is considered as cell marker set <code>glia_channel_threshold</code> to your desired value and set <code>glia_segmenter = False</code>.
 
@@ -64,6 +64,31 @@ The higher the gaussian_sigma values the increased chance of close sitting nucle
 2. Afterwards an erosion/dilation cycle is performed on the detected spot objects. This is done to remove small detected specks that are not considered DNA damage foci, the posterior dilation cycle merges single spot entities that might have been divided in multiple spots upon erosion. This step allows you to fine tune the size of what is considered a spot and what is not, by increasing the <code>dna_damage_erosion</code> parameter you will consider only the bigger spots and discard the small ones, the opposite is true for smaller spots. In this particular project <code>dna_damage_erosion = 2</code>. The same parameter value is used for the subsequent dilation step. Filtering by spot size could be an alternative but more biased implementation of this procedure.
 
 ![spot_detection](./images/spot_detection.png)
+
+<h2>Data Exploration Analysis Instructions</h2>
+
+This part is tailored for this particular dataset. Using the <code>2_data_exploration.ipynb</code> notebook you have to define the path to the results you want to explore and the mouse_ids corresponding to that particular staining in the second cell of the notebook.
+
+- To analyze and pair microglia stainings you would type the following:
+
+<code>csv_path = "./results/results_cellpdia30_sigma1_dilrad4_dnad_obj_seg_v2_gliaero6_gliathr20_dnadero2.csv"</code>
+<code>mouse_id_csv_path = "./mouse_ids_Iba1.csv"</code>
+
+- To analyze and pair astrocyte stainings you would type the following:
+
+<code>csv_path = "./results/results_cellpdia30_sigma1_dilrad4_dnad_obj_seg_v2_gliaero6_gliathr20_dnadero2.csv"</code>
+<code>mouse_id_csv_path = "./mouse_ids_GFAP.csv"</code>
+
+This data exploration notebook will extract and display the analysis settings from the results.csv file generated after running <code>1_image_analysis.ipynb</code> to include it in all generated plots. As an example the following file <code>results_cellpdia30_sigma1_dilrad4_dnad_obj_seg_v2_gliaero6_gliathr20_dnadero2.csv</code> will output these parameters:
+
+<code>Cellpose nuclei diameter: 30
+Gaussian sigma: 1
+Dilation radius nuclei: 4
+Dna damage segmenter version: 2
+Glia erosion: 6
+Glia threshold: 20
+Glia semantic segmentation version: None
+DNA damage foci erosion: 2</code>
 
 <h2>Environment setup instructions</h2>
 
