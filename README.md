@@ -11,7 +11,7 @@ This repository provides tools in the form of interactive Jupyter notebooks to c
 
 1. Create a raw_data directory inside the microglia_dna_damage folder to store all of your acquired images. In our case .lsm files acquired with a Zeiss microscope. This particular tools works with 3-channel images but is easy to adapt to multiple channels.
 
-2. (Optional) Train your own Object and Pixel (semantic) APOC classifiers to detect spots and cell marker as shown in 0_train_dna_damage_segmenter.ipynb and 0_train_glia_semantic_classifier.ipynb. An example of how to do that using Napari-Assistant can be found [here](https://github.com/adiezsanchez/intestinal_organoid_brightfield_analysis/blob/main/1_train_and_setup.ipynb).
+2. (Optional) Train your own Object and Pixel (semantic) [APOC classifiers](https://github.com/haesleinhuepf/apoc) to detect spots and cell marker as shown in 0_train_dna_damage_segmenter.ipynb and 0_train_glia_semantic_classifier.ipynb. An example of how to do that using Napari-Assistant can be found [here](https://github.com/adiezsanchez/intestinal_organoid_brightfield_analysis/blob/main/1_train_and_setup.ipynb).
 
 3. Open 1_image_analysis.ipynb and define the analysis parameters. Here's an explanation of what each parameter means and does during the analysis pipeline:
 
@@ -21,7 +21,7 @@ This repository provides tools in the form of interactive Jupyter notebooks to c
 
 ![nuclei_segmentation_gs6](./images/nuclei_seg_gs1.png)
 
-The higher the gaussian_sigma values the increased chance of close sitting nuclei being detected as a single entity during Cellpose segmentation (see bright green nuclei below, gaussian_sigma = 6). On the other hand very low gaussian_sigma can result in incorrect segmentations or loss of nuclei entities. You will have to manually adjust this value according to your images.
+The higher the gaussian_sigma values the increased chance of close sitting nuclei being detected as a single entity during Cellpose segmentation (see bright green nuclei below, <code>gaussian_sigma = 6</code>). On the other hand very low <code>gaussian_sigma</code> can result in incorrect segmentations or loss of nuclei entities. You will have to manually adjust this value according to your images.
 
 ![nuclei_segmentation_gs1](./images/nuclei_seg_gs6.png)
 
@@ -58,6 +58,12 @@ The higher the gaussian_sigma values the increased chance of close sitting nucle
 ![cm+_nuclei](./images/cm+_nuclei.png)
 
 <h3>Spot detection</h3>
+
+1. The final step in the analysis involves the detection of spots (in this example DNA damage foci) using a pretrained [APOC-based](https://github.com/haesleinhuepf/apoc) object-segmenter. This step uses the DNA damage maximum intensity projection as an input. Using 0_train_dna_damage_segmenter I have trained three version of this spot detection tool that you can use. Version 1 works well for optimal stainings with little noise/background, 2 and 3 generalize better over optimal and suboptimal stainings. Version 3 is skewed towards detection of foci in suboptimal stains with a lot of background so it introduces some noise in the results, I recommend sticking with <code>dna_damage_segmenter_version = 2</code>, a compromise between versions 1 and 3.
+
+2. Afterwards an erosion/dilation cycle is performed on the detected spot objects. This is done to remove small detected specks that are not considered DNA damage foci, the posterior dilation cycle merges single spot entities that might have been divided in multiple spots upon erosion. This step allows you to fine tune the size of what is considered a spot and what is not, by increasing the <code>dna_damage_erosion</code> parameter you will consider only the bigger spots and discard the small ones, the opposite is true for smaller spots. In this particular project <code>dna_damage_erosion = 2</code>. The same parameter value is used for the subsequent dilation step. Filtering by spot size could be an alternative but more biased implementation of this procedure.
+
+![spot_detection](./images/spot_detection.png)
 
 <h2>Environment setup instructions</h2>
 
