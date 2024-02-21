@@ -55,6 +55,8 @@ The higher the gaussian_sigma values the increased chance of close sitting nucle
 
 3. Once the erosion operation is complete we check which Cellpose 2.0 detected nuclei objects sit on top of the eroded colocalization mask and mark those as CM+ nuclei. Afterwards we perform the same nuclei dilation and erosion steps defined in the Nuclei segmentation section.
 
+![cm+_nuclei](./images/cm+_nuclei.png)
+
 <h3>Spot detection</h3>
 
 <h2>Environment setup instructions</h2>
