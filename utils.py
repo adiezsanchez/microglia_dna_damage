@@ -36,6 +36,7 @@ def analyze_images(
     glia_segmenter,
     glia_segmenter_version,
     glia_nuclei_colocalization_erosion,
+    dna_damage_erosion,
 ):
     model = models.Cellpose(gpu=True, model_type="nuclei")
     stats = []
@@ -177,7 +178,7 @@ def analyze_images(
             # Erode dna_damage_masks to get rid of small artifacts
             # Set the structuring element for erosion
             structuring_element_damage = np.ones(
-                (2, 2), dtype=bool
+                (dna_damage_erosion, dna_damage_erosion), dtype=bool
             )  # You can adjust the size and shape
 
             # Perform binary erosion
@@ -257,12 +258,12 @@ def analyze_images(
 
     if glia_segmenter:
         df.to_csv(
-            f"./results/results_cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_dnad_obj_seg_v{dna_damage_segmenter_version}_gliaero{glia_nuclei_colocalization_erosion}_glia_sem_seg_v{glia_segmenter_version}.csv",
+            f"./results/results_cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_dnad_obj_seg_v{dna_damage_segmenter_version}_gliaero{glia_nuclei_colocalization_erosion}_glia_sem_seg_v{glia_segmenter_version}_dnadero{dna_damage_erosion}.csv",
             index=False,
         )
     else:
         df.to_csv(
-            f"./results/results_cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_dnad_obj_seg_v{dna_damage_segmenter_version}_gliaero{glia_nuclei_colocalization_erosion}_gliathr{glia_channel_threshold}.csv",
+            f"./results/results_cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_dnad_obj_seg_v{dna_damage_segmenter_version}_gliaero{glia_nuclei_colocalization_erosion}_gliathr{glia_channel_threshold}_dnadero{dna_damage_erosion}.csv",
             index=False,
         )
 
