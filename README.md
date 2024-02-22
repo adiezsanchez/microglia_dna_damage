@@ -65,19 +65,19 @@ The higher the gaussian_sigma values the increased chance of close sitting nucle
 
 ![spot_detection](./images/spot_detection.png)
 
-<h2>Data Exploration Instructions</h2>
+<h2>Numerical Data Exploration Instructions</h2>
 
 This part is tailored for this particular dataset. Using the <code>2_data_exploration.ipynb</code> notebook you have to define the path to the results you want to explore and the mouse_ids corresponding to that particular staining in the second cell of the notebook.
 
 - To analyze and pair microglia stainings you would type the following:
 
-<code>csv_path = "./results/results_cellpdia30_sigma1_dilrad4_dnad_obj_seg_v2_gliaero6_gliathr20_dnadero2.csv"</code>
+<code>csv_path = "./results/results_cellpdia30_sigma1_dilrad4_dnad_obj_seg_v1_gliaero6_gliathr20_dnadero2.csv"</code>
 
 <code>mouse_id_csv_path = "./mouse_ids_Iba1.csv"</code>
 
 - To analyze and pair astrocyte stainings you would type the following:
 
-<code>csv_path = "./results/results_cellpdia30_sigma1_dilrad4_dnad_obj_seg_v2_gliaero6_gliathr20_dnadero2.csv"</code>
+<code>csv_path = "./results/results_cellpdia30_sigma1_dilrad4_dnad_obj_seg_v1_gliaero6_gliathr20_dnadero2.csv"</code>
 
 <code>mouse_id_csv_path = "./mouse_ids_GFAP.csv"</code>
 
@@ -92,7 +92,37 @@ Glia threshold: 20
 Glia semantic segmentation version: None
 DNA damage foci erosion: 2</code>
 
+Afterwards it will display each technical replicate data point to explore the presence of outliers. This step is useful to detect errors in segmentation arising from poor quality data input (suboptimal stainings). Take a look at the DNA damage mask area and Glia mask area quality control plots. It is clear that a few of them show signs of aberrant segmentation, hovering the mouse over each data point will display the original filename and index.
 
+![dna_damage_qc](./images/dna_damage_qc.png)
+
+![glia_qc](./images/glia_qc.png)
+
+Using the displayed index and applying the same analysis settings displayed in the graph titles in the <code>4_quality_checks.ipynb</code> notebook we can observe how there is actually an issue with the input image (suboptimal stain with a lot of background). This notebook also outputs a Napari viewer for in detail exploration.
+
+![failed_qc_image](./images/index21.png)
+
+ This <code>2_data_exploration.ipynb</code> notebook incorporates a QC (quality control) check based on these two analysis outputs (spot and cell marker mask areas). Any image where the value of those outputs is 3 times above the mean value of all samples will be flagged as a suboptimal stain and all datapoints associated with this particular <code>staining_id</code> will not pass QC. After performing this quality check a new <code>qc_.csv</code> file will be generated containing all data points associated with their corresponding mouse_id data and stating the QC status <code>staining_qc_passed = True / False</code>. Based on this QC status the notebook will filter the datapoints that passed QC and display their corresponding graphs.
+
+<h2>Batch Image Data Exploration Instructions</h2>
+
+Both <code>3_qc_passed_image_display.ipynb</code> and <code>3_qc_failed_image_display.ipynb</code> notebooks take the same input as the <code>2_data_exploration.ipynb</code> notebook. 
+
+- To analyze and pair microglia stainings you would type the following:
+
+<code>csv_path = "./results/results_cellpdia30_sigma1_dilrad4_dnad_obj_seg_v1_gliaero6_gliathr20_dnadero2.csv"</code>
+
+<code>mouse_id_csv_path = "./mouse_ids_Iba1.csv"</code>
+
+- To analyze and pair astrocyte stainings you would type the following:
+
+<code>csv_path = "./results/results_cellpdia30_sigma1_dilrad4_dnad_obj_seg_v1_gliaero6_gliathr20_dnadero2.csv"</code>
+
+<code>mouse_id_csv_path = "./mouse_ids_GFAP.csv"</code>
+
+In this case the output will be different, both image display notebooks will extract the analysis settings from the results file and apply them to the images that passed or failed QC in a programmatic manner, then it will display them in-notebook for exploration as Matplotlib graphs. Preceding each analysis results you will find the associated <code>filename</code> and the number of spots detected inside each CM+ nuclei in a vector-like data structure <code>[1 1 0 2 2 0]</code>.
+
+![qc_image_display](./images/qc_image_display.png)
 
 <h2>Environment setup instructions</h2>
 
