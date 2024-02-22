@@ -65,30 +65,34 @@ The higher the gaussian_sigma values the increased chance of close sitting nucle
 
 ![spot_detection](./images/spot_detection.png)
 
-<h2>Data Exploration Analysis Instructions</h2>
+<h2>Data Exploration Instructions</h2>
 
 This part is tailored for this particular dataset. Using the <code>2_data_exploration.ipynb</code> notebook you have to define the path to the results you want to explore and the mouse_ids corresponding to that particular staining in the second cell of the notebook.
 
 - To analyze and pair microglia stainings you would type the following:
 
 <code>csv_path = "./results/results_cellpdia30_sigma1_dilrad4_dnad_obj_seg_v2_gliaero6_gliathr20_dnadero2.csv"</code>
+
 <code>mouse_id_csv_path = "./mouse_ids_Iba1.csv"</code>
 
 - To analyze and pair astrocyte stainings you would type the following:
 
 <code>csv_path = "./results/results_cellpdia30_sigma1_dilrad4_dnad_obj_seg_v2_gliaero6_gliathr20_dnadero2.csv"</code>
+
 <code>mouse_id_csv_path = "./mouse_ids_GFAP.csv"</code>
 
-This data exploration notebook will extract and display the analysis settings from the results.csv file generated after running <code>1_image_analysis.ipynb</code> to include it in all generated plots. As an example the following file <code>results_cellpdia30_sigma1_dilrad4_dnad_obj_seg_v2_gliaero6_gliathr20_dnadero2.csv</code> will output these parameters:
+This data exploration notebook will extract and display the analysis settings from the results.csv file generated after running <code>1_image_analysis.ipynb</code> to include it in the title of all generated plots. As an example the following file <code>results_cellpdia30_sigma1_dilrad4_dnad_obj_seg_v1_gliaero6_gliathr20_dnadero2.csv</code> will output these parameters:
 
 <code>Cellpose nuclei diameter: 30
 Gaussian sigma: 1
 Dilation radius nuclei: 4
-Dna damage segmenter version: 2
+Dna damage segmenter version: 1
 Glia erosion: 6
 Glia threshold: 20
 Glia semantic segmentation version: None
 DNA damage foci erosion: 2</code>
+
+
 
 <h2>Environment setup instructions</h2>
 
