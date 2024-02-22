@@ -17,7 +17,7 @@ This repository provides tools in the form of interactive Jupyter notebooks to c
 
 <h3>Nuclei segmentation</h3>
 
-1. Gaussian smoothing blurs the input nuclei image so later on the Cellpose algorithm does not focus in bright spots inside the nuclei as separate objects. The amount of blurrying/smoothing can be controlled by the <code>gaussian_sigma</code> parameter (default = 1).
+1. Gaussian smoothing blurs the input nuclei image so later on the Cellpose algorithm does not focus in bright spots inside the nuclei as separate objects. The amount of blurring/smoothing can be controlled by the <code>gaussian_sigma</code> parameter (default = 1).
 
 ![nuclei_segmentation_gs6](./images/nuclei_seg_gs1.png)
 
@@ -49,9 +49,9 @@ The higher the gaussian_sigma values the increased chance of close sitting nucle
 
 <h3>Cell Marker+ (CM+) nuclei definition</h3>
 
-1. Once you have decided on a method for cell marker segmentation you would have obtained a Cell Marker + nuclei colocalization mask defining the areas of the image where the cell marker signal is sitting on top of a nuclei.
+1. Once you have decided on a method for cell marker segmentation you would have obtained a Cell Marker + nuclei colocalization mask defining the areas of the image where the cell marker signal is sitting on top of a nucleus.
 
-2. In the case of microglia and astrocytic cells (our example) there are cell protrusions that might sit on top of a nuclei that does not correspond to a Cell Marker positive cell (since our input image is a stack from multiple planes that is flattened via maximum intensity projection). In order to get rid of those unwanted regions we perform an erosion of the colocalization mask. The erosion extent is defined by the <code>glia_nuclei_colocalization_erosion</code> variable. The higher the value, the stricter the conditions to consider a nuclei as CM+. Too high values will result in the complete absence of CM+ nuclei.
+2. In the case of microglia and astrocytic cells (our example) there are cell protrusions that might sit on top of a nucleus that does not correspond to a Cell Marker positive cell (since our input image is a stack from multiple planes that is flattened via maximum intensity projection). In order to get rid of those unwanted regions we perform an erosion of the colocalization mask. The erosion extent is defined by the <code>glia_nuclei_colocalization_erosion</code> variable. The higher the value, the stricter the conditions to consider a nucleus as CM+. Too high values will result in the complete absence of CM+ nuclei.
 
 3. Once the erosion operation is complete we check which Cellpose 2.0 detected nuclei objects sit on top of the eroded colocalization mask and mark those as CM+ nuclei. Afterwards we perform the same nuclei dilation and erosion steps defined in the Nuclei segmentation section.
 
@@ -102,11 +102,11 @@ Using the displayed index and applying the same analysis settings displayed in t
 
 ![failed_qc_image](./images/index21.png)
 
- This <code>2_data_exploration.ipynb</code> notebook incorporates a QC (quality control) check based on these two analysis outputs (spot and cell marker mask areas). Any image where the value of those outputs is 3 times above the mean value of all samples will be flagged as a suboptimal stain and all datapoints associated with this particular <code>staining_id</code> will not pass QC. After performing this quality check a new <code>qc_.csv</code> file will be generated containing all data points associated with their corresponding mouse_id data and stating the QC status <code>staining_qc_passed = True / False</code>. Based on this QC status the notebook will filter the datapoints that passed QC and display their corresponding graphs.
+This <code>2*data_exploration.ipynb</code> notebook incorporates a QC (quality control) check based on these two analysis outputs (spot and cell marker mask areas). Any image where the value of those outputs is 3 times above the mean value of all samples will be flagged as a suboptimal stain and all datapoints associated with this particular <code>staining_id</code> will not pass QC. After performing this quality check a new <code>qc*.csv</code> file will be generated containing all data points associated with their corresponding mouse_id data and stating the QC status <code>staining_qc_passed = True / False</code>. Based on this QC status the notebook will filter the datapoints that passed QC and display their corresponding graphs.
 
 <h2>Batch Image Data Exploration Instructions</h2>
 
-Both <code>3_qc_passed_image_display.ipynb</code> and <code>3_qc_failed_image_display.ipynb</code> notebooks take the same input as the <code>2_data_exploration.ipynb</code> notebook. 
+Both <code>3_qc_passed_image_display.ipynb</code> and <code>3_qc_failed_image_display.ipynb</code> notebooks take the same input as the <code>2_data_exploration.ipynb</code> notebook.
 
 - To analyze and pair microglia stainings you would type the following:
 
@@ -120,7 +120,7 @@ Both <code>3_qc_passed_image_display.ipynb</code> and <code>3_qc_failed_image_di
 
 <code>mouse_id_csv_path = "./mouse_ids_GFAP.csv"</code>
 
-In this case the output will be different, both image display notebooks will extract the analysis settings from the results file and apply them to the images that passed or failed QC in a programmatic manner, then it will display them in-notebook for exploration as Matplotlib graphs. Preceding each analysis results you will find the associated <code>filename</code> and the number of spots detected inside each CM+ nuclei in a vector-like data structure <code>[1 1 0 2 2 0]</code>.
+In this case the output will be different, both image display notebooks will extract the analysis settings from the results file and apply them to the images that passed or failed QC in a programmatic manner, then it will display them in-notebook for exploration as Matplotlib graphs. Preceding each analysis results you will find the associated <code>filename</code> and the number of spots detected inside each CM+ nucleus in a vector-like data structure <code>[1 1 0 2 2 0]</code>.
 
 ![qc_image_display](./images/qc_image_display.png)
 
