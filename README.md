@@ -59,7 +59,7 @@ The higher the gaussian_sigma values the increased chance of close sitting nucle
 
 <h3>Spot detection</h3>
 
-1. The final step in the analysis involves the detection of spots (in this example DNA damage foci) using a pretrained [APOC-based](https://github.com/haesleinhuepf/apoc) object-segmenter. This step uses the DNA damage maximum intensity projection as an input. Using 0_train_dna_damage_segmenter I have trained three version of this spot detection tool that you can use. Version 1 works well for optimal stainings with little noise/background, 2 and 3 generalize better over optimal and suboptimal stainings. Version 3 is skewed towards detection of foci in suboptimal stains with a lot of background so it introduces some noise in the results, I recommend sticking with <code>dna_damage_segmenter_version = 2</code>, a compromise between versions 1 and 3.
+1. The final step in the analysis involves the detection of spots (in this example DNA damage foci) using a pretrained [APOC-based](https://github.com/haesleinhuepf/apoc) object-segmenter. This step uses the DNA damage maximum intensity projection as an input. Using 0_train_dna_damage_segmenter I have trained three version of this spot detection tool that you can use. Version 1 works well for optimal stainings with little noise/background, 2 and 3 generalize better over optimal and suboptimal stainings. Version 3 is skewed towards detection of foci in suboptimal stains with a lot of background so it introduces some noise in the results. I recommend sticking with <code>dna_damage_segmenter_version = 1</code> the stricter analysis settings that will only segment correctly optimal staining qualities (associated with fresh slides in this project).
 
 2. Afterwards an erosion/dilation cycle is performed on the detected spot objects. This is done to remove small detected specks that are not considered DNA damage foci, the posterior dilation cycle merges single spot entities that might have been divided in multiple spots upon erosion. This step allows you to fine tune the size of what is considered a spot and what is not, by increasing the <code>dna_damage_erosion</code> parameter you will consider only the bigger spots and discard the small ones, the opposite is true for smaller spots. In this particular project <code>dna_damage_erosion = 2</code>. The same parameter value is used for the subsequent dilation step. Filtering by spot size could be an alternative but more biased implementation of this procedure.
 
@@ -123,6 +123,12 @@ Both <code>3_qc_passed_image_display.ipynb</code> and <code>3_qc_failed_image_di
 In this case the output will be different, both image display notebooks will extract the analysis settings from the results file and apply them to the images that passed or failed QC in a programmatic manner, then it will display them in-notebook for exploration as Matplotlib graphs. Preceding each analysis results you will find the associated <code>filename</code> and the number of spots detected inside each CM+ nuclei in a vector-like data structure <code>[1 1 0 2 2 0]</code>.
 
 ![qc_image_display](./images/qc_image_display.png)
+
+<h2>Detailed Image Data Exploration Instructions</h2>
+
+In order to play around with analysis parameters and display in detail resulting segmentations <code>4_quality_checks.ipynb</code> allows to input the index of single images and to numerically tweak the analysis settings. On top of the Batch Image Data Exploration notebook outputs this notebook displays a Napari viewer that allows the visualization of every segmentation step in detail.
+
+![napari](./images/napari_viewer.png)
 
 <h2>Environment setup instructions</h2>
 
