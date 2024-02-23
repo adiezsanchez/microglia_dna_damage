@@ -203,7 +203,7 @@ def analyze_images(
                 labeled_dna_damage, labeled_glia_nuclei, num_glia_nuclei
             )
 
-            # Count particles in other nuclei
+            # Count particles in all nuclei
             particles_in_nuclei = count_particles_in_nuclei(
                 labeled_dna_damage, labeled_nuclei, num_nuclei
             )
@@ -225,6 +225,7 @@ def analyze_images(
                 "nr_+_dna_damage_glia_nuclei": np.count_nonzero(
                     particles_in_glia_nuclei
                 ),
+                "nr_+_dna_damage_all_nuclei": np.count_nonzero(particles_in_nuclei),
                 "nr_-_dna_damage_glia_nuclei": (particles_in_glia_nuclei == 0).sum(),
                 "nr_glia_+_nuclei": processed_region_labels.max(),
                 "nr_total_nuclei": nuclei_masks.max(),
@@ -236,6 +237,9 @@ def analyze_images(
                     np.sum(above_threshold_indices) / above_threshold_indices.size
                 )
                 * 100,
+                "damage_load_ratio": (
+                    np.count_nonzero(particles_in_nuclei) / nuclei_masks.max()
+                ),
             }
 
             stats.append(stats_dict)
