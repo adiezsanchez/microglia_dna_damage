@@ -7,6 +7,14 @@ This repository provides tools in the form of interactive Jupyter notebooks to c
 
 ![workflow](./images/workflow.png)
 
+<h2>Raw Data Download</h2>
+
+1. [Contact Me](mailto:alberto.d.sanchez@ntnu.no) to obtain a fresh working S3 bucket pre-signed link.
+
+2. Paste the link inside <code>0_data_download.ipynb</code> notebook after <code>presigned_url</code>.
+
+3. Run the notebook to download and extract the data.
+
 <h2>Image Analysis Instructions</h2>
 
 1. Create a raw_data directory inside the microglia_dna_damage folder to store all of your acquired images. In our case .lsm files acquired with a Zeiss microscope. This particular tools works with 3-channel images but is easy to adapt to multiple channels.
