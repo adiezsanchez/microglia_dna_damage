@@ -2,3 +2,5 @@ raw_data
 astrocyte_data
 microglia_data
 __pycache__
+./mouse_ids_GFAP.csv
+./mouse_ids_Iba1.csv
