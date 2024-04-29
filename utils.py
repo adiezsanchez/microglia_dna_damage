@@ -301,7 +301,19 @@ def read_results_csv(dataset, csv_path):
     # Extract 'staining_id'
     df["staining_id"] = df["filename"].str.extract("(\d+)_40X")
 
-    return df, df_mouse_id
+    # Process staining_ids into numeric to merge based on staining_id values
+    df["staining_id"] = pd.to_numeric(df["staining_id"], errors="coerce")
+    df_mouse_id["staining_id"] = pd.to_numeric(
+        df_mouse_id["staining_id"], errors="coerce"
+    )
+
+    # Merge both processed_results_df and mouse_id dataframes on staining_id
+    merged_df = pd.merge(df, df_mouse_id, on="staining_id")
+
+    # Display the first few rows of the DataFrame
+    merged_df.head()
+
+    return df, df_mouse_id, merged_df
 
 
 def extract_analysis_parameters(csv_path):
