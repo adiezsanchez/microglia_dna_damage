@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 from tqdm import tqdm
 import napari
 import tifffile
@@ -37,7 +38,7 @@ def analyze_images(
     glia_segmenter_version,
     glia_nuclei_colocalization_erosion,
     dna_damage_erosion,
-    dataset
+    dataset,
 ):
     model = models.Cellpose(gpu=True, model_type="nuclei")
     stats = []
@@ -273,3 +274,85 @@ def analyze_images(
         )
 
     return df
+
+
+def read_results_csv(dataset, csv_path):
+
+    if dataset == "microglia":
+        mouse_id_csv_path = "./mouse_ids_Iba1.csv"
+        print(f"The following dataset will be analyzed: {dataset}")
+
+    elif dataset == "astrocyte":
+        mouse_id_csv_path = "./mouse_ids_GFAP.csv"
+        print(f"The following dataset will be analyzed: {dataset}")
+    else:
+        print("Please define an existing dataset")
+
+    # Read the CSV file
+    df = pd.read_csv(csv_path)
+    df_mouse_id = pd.read_csv(mouse_id_csv_path, delimiter=";", encoding="UTF-8")
+
+    # Convert the index into a column
+    df.reset_index(inplace=True)
+
+    # Extract 'tissue_location'
+    df["tissue_location"] = df["filename"].str.split("_40X_").str[-1]
+
+    # Extract 'staining_id'
+    df["staining_id"] = df["filename"].str.extract("(\d+)_40X")
+
+    return df, df_mouse_id
+
+
+def extract_analysis_parameters(csv_path):
+    "Takes the results.csv path as an input and extracts the analysis parameters using regular expressions"
+
+    # Extract analysis parameters from the CSV path
+    extracted_values = re.findall(r"\d+", csv_path)
+
+    # Dynamically assign the extracted values to variables
+    if len(extracted_values) >= 7:
+        cellpose_nuclei_diameter = int(extracted_values[0])
+        gaussian_sigma = int(extracted_values[1])
+        dilation_radius_nuclei = int(extracted_values[2])
+        dna_damage_segmenter_version = int(extracted_values[3])
+        glia_nuclei_colocalization_erosion = int(extracted_values[4])
+        dna_damage_erosion = int(extracted_values[6])
+        if "_glia_sem_seg_v" in str(csv_path):
+            glia_segmenter = True
+        else:
+            glia_segmenter = False
+
+    if glia_segmenter:
+        glia_segmenter_version = int(extracted_values[5])
+        glia_channel_threshold = None
+        # Dinamically adjust plot titles
+        parameters_title = f"cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_dnad_obj_seg_v{dna_damage_segmenter_version}_gliaero{glia_nuclei_colocalization_erosion}_glia_sem_seg_v{glia_segmenter_version}_dnadero{dna_damage_erosion}"
+    else:
+        glia_channel_threshold = int(extracted_values[5])
+        glia_segmenter_version = None
+        # Dinamically adjust plot titles
+        parameters_title = f"cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_dnad_obj_seg_v{dna_damage_segmenter_version}_gliaero{glia_nuclei_colocalization_erosion}_gliathr{glia_channel_threshold}_dnadero{dna_damage_erosion}"
+
+    # Print the assigned analysis parameters
+    print(f"Cellpose nuclei diameter: {cellpose_nuclei_diameter}")
+    print(f"Gaussian sigma: {gaussian_sigma}")
+    print(f"Dilation radius nuclei: {dilation_radius_nuclei}")
+    print(f"Dna damage segmenter version: {dna_damage_segmenter_version}")
+    print(f"Glia erosion: {glia_nuclei_colocalization_erosion}")
+    print(f"Glia threshold: {glia_channel_threshold}")
+    print(f"Glia semantic segmentation version: {glia_segmenter_version}")
+    print(f"DNA damage foci erosion: {dna_damage_erosion}")
+
+    return (
+        cellpose_nuclei_diameter,
+        gaussian_sigma,
+        dilation_radius_nuclei,
+        dna_damage_segmenter_version,
+        glia_nuclei_colocalization_erosion,
+        glia_channel_threshold,
+        glia_segmenter,
+        glia_segmenter_version,
+        dna_damage_erosion,
+        parameters_title,
+    )
