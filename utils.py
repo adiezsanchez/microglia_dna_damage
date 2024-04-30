@@ -12,6 +12,7 @@ import pyclesperanto_prototype as cle
 from apoc import ObjectSegmenter, PixelClassifier
 import pandas as pd
 import os
+import plotly.express as px
 
 
 # Function to count particles in nuclei
@@ -239,7 +240,10 @@ def analyze_images(
                     np.sum(above_threshold_indices) / above_threshold_indices.size
                 )
                 * 100,
-                "damage_load_ratio": (
+                "damage_load_ratio_glia_+_cells": (
+                    np.count_nonzero(particles_in_glia_nuclei) / processed_region_labels.max()
+                ),
+                "damage_load_ratio_all_cells": (
                     np.count_nonzero(particles_in_nuclei) / nuclei_masks.max()
                 ),
             }
@@ -368,3 +372,110 @@ def extract_analysis_parameters(csv_path):
         dna_damage_erosion,
         parameters_title,
     )
+    
+def show_exploratory_data(df, dataset, parameters_title):
+    
+    # Create the plot
+    fig = px.scatter(df, x='tissue_location', y='nr_+_dna_damage_glia_nuclei',
+                    hover_data=['staining_id','index','filename'], title=f"Number of DNA damage+ {dataset.capitalize()}+ Nuclei by Tissue Location - {parameters_title}")
+    # Show the plot
+    fig.show()
+    
+    # Create the plot
+    fig = px.scatter(df, x='tissue_location', y='avg_dna_damage_foci/glia_+',
+                    hover_data=['staining_id','index','filename'], title=f"Average DNA damage foci in {dataset.capitalize()} Nuclei by Tissue Location - {parameters_title}")
+    # Show the plot
+    fig.show()
+    
+    # Create the plot
+    fig = px.scatter(df, x='tissue_location', y='avg_dna_damage_foci/all_nuclei',
+                    hover_data=['staining_id','index','filename'], title=f"Average DNA damage foci in All Nuclei by Tissue Location - {parameters_title}")
+    # Show the plot
+    fig.show()
+    
+    # Create the plot
+    fig = px.scatter(df, x='tissue_location', y='nr_glia_+_nuclei',
+                    hover_data=['staining_id','index','filename'], title=f"Nr of {dataset.capitalize()}+ nuclei by Tissue Location - {parameters_title}")
+    # Show the plot
+    fig.show()
+    
+    # Create the plot
+    fig = px.scatter(df, x='tissue_location', y='nr_total_nuclei',
+                    hover_data=['staining_id','index','filename'], title=f'Nr of total nuclei by Tissue Location - {parameters_title}')
+    # Show the plot
+    fig.show()
+    
+    # Create the plot
+    fig = px.scatter(df, x='staining_id', y='nr_glia_+_nuclei',
+                    hover_data=['staining_id','index','filename'], title=f'Nr of {dataset.capitalize()}+ nuclei by Sample - {parameters_title}')
+    # Show the plot
+    fig.show()
+    
+    # Create the plot
+    fig = px.scatter(df, x='staining_id', y='%_dna_damage_signal',
+                    hover_data=['staining_id','index','filename'], title=f'Dna damage mask area (QC) - {parameters_title}')
+    # Show the plot
+    fig.show()
+    
+    # Create the plot
+    fig = px.scatter(df, x='staining_id', y='%_glia+_signal',
+                    hover_data=['staining_id','index','filename'], title=f'{dataset.capitalize()} mask area (QC) - {parameters_title}')
+    # Show the plot
+    fig.show()
+    
+def determine_stain_quality(value, mean_value):
+    """Determines staining quality, anything above 3 times the mean value is considered an outlier"""
+    if value < (mean_value + mean_value*3):
+        return "optimal"
+    else:
+        return "suboptimal"
+    
+def qc_filter_dataset(merged_df,
+                      dataset, 
+                      cellpose_nuclei_diameter, 
+                      gaussian_sigma, 
+                      dilation_radius_nuclei, 
+                      dna_damage_segmenter_version, 
+                      glia_nuclei_colocalization_erosion, 
+                      glia_channel_threshold, 
+                      glia_segmenter, 
+                      glia_segmenter_version, 
+                      dna_damage_erosion):
+    
+    # Calculate mean area of the image occupied by glia+ signal
+    glia_mask_area_mean = merged_df['%_glia+_signal'].mean() 
+
+    # Calculate mean area of the image occupied by dna_damage_+ signal
+    dna_damage_mask_area_mean = merged_df['%_dna_damage_signal'].mean() 
+
+    # Print extracted values
+    print(f"Glia_mask_area_%_mean: {glia_mask_area_mean}, Dna_damage_mask_area_%_mean: {dna_damage_mask_area_mean}")
+    
+    # Check stain quality for glia and create another column storing optimal or suboptimal if qc_passed or not    
+    merged_df['glia_stain_quality_auto'] = merged_df['%_glia+_signal'].apply(lambda x: determine_stain_quality(x, glia_mask_area_mean))
+
+    # Check stain quality for dna_damage and create another column storing optimal or suboptimal if qc_passed or not 
+    merged_df['dna_damage_stain_quality_auto'] = merged_df['%_dna_damage_signal'].apply(lambda x: determine_stain_quality(x, dna_damage_mask_area_mean))
+
+    # Check for both stain qualities and store True qc_passed if both are optimal
+    merged_df['staining_qc_passed'] = (merged_df['glia_stain_quality_auto'] == 'optimal') & (merged_df['dna_damage_stain_quality_auto'] == 'optimal')
+
+    # Group the DataFrame by 'staining_id' and check if all 'staining_qc_passed' values are True, otherwise set them all to False
+    merged_df['staining_qc_passed'] = merged_df.groupby('staining_id')['staining_qc_passed'].transform('all')
+
+    # Now, if all 'staining_qc_passed' values for the same 'staining_id' were True, the column will remain True; otherwise, it will be False
+    merged_df.head()
+    
+    # Save the resulting Dataframe into a .csv file
+    if glia_segmenter:
+        merged_df.to_csv(
+        f"./results/qc_{dataset}_cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_dnad_obj_seg_v{dna_damage_segmenter_version}_gliaero{glia_nuclei_colocalization_erosion}_glia_sem_seg_v{glia_segmenter_version}_dnadero{dna_damage_erosion}.csv",
+        index=False,
+        )
+    else:
+        merged_df.to_csv(
+            f"./results/qc_{dataset}_cellpdia{cellpose_nuclei_diameter}_sigma{gaussian_sigma}_dilrad{dilation_radius_nuclei}_dnad_obj_seg_v{dna_damage_segmenter_version}_gliaero{glia_nuclei_colocalization_erosion}_gliathr{glia_channel_threshold}_dnadero{dna_damage_erosion}.csv",
+            index=False,
+        )
+    
+    return merged_df
