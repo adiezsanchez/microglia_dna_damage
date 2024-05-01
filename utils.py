@@ -430,17 +430,19 @@ def determine_stain_quality(value, mean_value):
     else:
         return "suboptimal"
     
-def qc_filter_dataset(merged_df,
-                      dataset, 
-                      cellpose_nuclei_diameter, 
-                      gaussian_sigma, 
-                      dilation_radius_nuclei, 
-                      dna_damage_segmenter_version, 
-                      glia_nuclei_colocalization_erosion, 
-                      glia_channel_threshold, 
-                      glia_segmenter, 
-                      glia_segmenter_version, 
-                      dna_damage_erosion):
+def qc_filter_dataset(
+    merged_df,
+    dataset, 
+    cellpose_nuclei_diameter, 
+    gaussian_sigma, 
+    dilation_radius_nuclei, 
+    dna_damage_segmenter_version, 
+    glia_nuclei_colocalization_erosion, 
+    glia_channel_threshold, 
+    glia_segmenter, 
+    glia_segmenter_version, 
+    dna_damage_erosion
+):
     
     # Calculate mean area of the image occupied by glia+ signal
     glia_mask_area_mean = merged_df['%_glia+_signal'].mean() 
@@ -479,3 +481,59 @@ def qc_filter_dataset(merged_df,
         )
     
     return merged_df
+
+def plot_technical_replicates(auto_filtered_df, categories, dataset, parameters_title):
+    
+    # Create the boxplot with ordered categories
+    fig = px.box(auto_filtered_df, x='sex_tissue', y='avg_dna_damage_foci/glia_+',
+                color='genotype',  # Different genotypes will be shown in different colors
+                category_orders={'sex_tissue': categories},  # Ensuring the specified order
+                title=f'DNA Damage Foci nr in All {dataset.capitalize()} Nuclei by Tissue Location and Genotype (separated by sex) - Auto stain QC - {parameters_title}')
+
+    # Show the plot
+    fig.show()
+
+    # Create the boxplot with ordered categories
+    fig = px.box(auto_filtered_df, x='sex_tissue', y='avg_dna_damage_foci/glia_+_damage_+',
+                color='genotype',  # Different genotypes will be shown in different colors
+                category_orders={'sex_tissue': categories},  # Ensuring the specified order
+                title=f'DNA Damage Foci nr in Damage+ {dataset.capitalize()} Nuclei by Tissue Location and Genotype (separated by sex) - Auto stain QC - {parameters_title}')
+
+    # Show the plot
+    fig.show()
+    
+    # Create the boxplot with ordered categories
+    fig = px.box(auto_filtered_df, x='sex_tissue', y='avg_dna_damage_foci/all_nuclei',
+                color='genotype',  # Different genotypes will be shown in different colors
+                category_orders={'sex_tissue': categories},  # Ensuring the specified order
+                title=f'DNA Damage Foci nr in All Nuclei by Tissue Location and Genotype (separated by sex) - Auto stain QC - {parameters_title}')
+
+    # Show the plot
+    fig.show()
+    
+    # Create the boxplot with ordered categories
+    fig = px.box(auto_filtered_df, x='sex_tissue', y='avg_dna_damage_foci/all_nuclei_damage_+',
+                color='genotype',  # Different genotypes will be shown in different colors
+                category_orders={'sex_tissue': categories},  # Ensuring the specified order
+                title=f'DNA Damage Foci nr in Damage+ Nuclei by Tissue Location and Genotype (separated by sex) - Auto stain QC - {parameters_title}')
+
+    # Show the plot
+    fig.show()
+    
+    # Create the boxplot with ordered categories
+    fig = px.box(auto_filtered_df, x='sex_tissue', y='damage_load_ratio_glia_+_cells',
+                color='genotype',  # Different genotypes will be shown in different colors
+                category_orders={'sex_tissue': categories},  # Ensuring the specified order
+                title=f'Ratio of damaged {dataset.capitalize()} nuclei by Tissue Location and Genotype (separated by sex) - Auto stain QC - {parameters_title}')
+
+    # Show the plot
+    fig.show()
+    
+    # Create the boxplot with ordered categories
+    fig = px.box(auto_filtered_df, x='sex_tissue', y='damage_load_ratio_all_cells',
+                color='genotype',  # Different genotypes will be shown in different colors
+                category_orders={'sex_tissue': categories},  # Ensuring the specified order
+                title=f'Ratio of damaged nuclei by Tissue Location and Genotype (separated by sex) - Auto stain QC - {parameters_title}')
+
+    # Show the plot
+    fig.show()
