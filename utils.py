@@ -423,9 +423,9 @@ def show_exploratory_data(df, dataset, parameters_title):
     # Show the plot
     fig.show()
     
-def determine_stain_quality(value, mean_value):
-    """Determines staining quality, anything above 3 times the mean value is considered an outlier"""
-    if value < (mean_value + mean_value*3):
+def determine_stain_quality(value, mean_value, quality_factor):
+    """Determines staining quality, anything above quality_factor times the mean value is considered an outlier"""
+    if value < (0.000001 + mean_value*quality_factor):
         return "optimal"
     else:
         return "suboptimal"
@@ -441,7 +441,8 @@ def qc_filter_dataset(
     glia_channel_threshold, 
     glia_segmenter, 
     glia_segmenter_version, 
-    dna_damage_erosion
+    dna_damage_erosion,
+    quality_factor
 ):
     
     # Calculate mean area of the image occupied by glia+ signal
@@ -454,10 +455,10 @@ def qc_filter_dataset(
     print(f"Glia_mask_area_%_mean: {glia_mask_area_mean}, Dna_damage_mask_area_%_mean: {dna_damage_mask_area_mean}")
     
     # Check stain quality for glia and create another column storing optimal or suboptimal if qc_passed or not    
-    merged_df['glia_stain_quality_auto'] = merged_df['%_glia+_signal'].apply(lambda x: determine_stain_quality(x, glia_mask_area_mean))
+    merged_df['glia_stain_quality_auto'] = merged_df['%_glia+_signal'].apply(lambda x: determine_stain_quality(x, glia_mask_area_mean, quality_factor))
 
     # Check stain quality for dna_damage and create another column storing optimal or suboptimal if qc_passed or not 
-    merged_df['dna_damage_stain_quality_auto'] = merged_df['%_dna_damage_signal'].apply(lambda x: determine_stain_quality(x, dna_damage_mask_area_mean))
+    merged_df['dna_damage_stain_quality_auto'] = merged_df['%_dna_damage_signal'].apply(lambda x: determine_stain_quality(x, dna_damage_mask_area_mean, quality_factor))
 
     # Check for both stain qualities and store True qc_passed if both are optimal
     merged_df['staining_qc_passed'] = (merged_df['glia_stain_quality_auto'] == 'optimal') & (merged_df['dna_damage_stain_quality_auto'] == 'optimal')
