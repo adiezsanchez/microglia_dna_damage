@@ -157,3 +157,19 @@ In order to play around with analysis parameters and display in detail resulting
 5. Then launch Jupyter lab to interact with the code by typing:
 
    <code>jupyter lab</code>
+
+<h2>How to cite this pipeline</h2>
+
+If you are using this pipeline to analyze your bioimage data you can easily include it in your references following the instructions below:
+
+- For machine-readable citation metadata, see `CITATION.cff` in this repository (also surfaced on GitHub under **About → Cite this repository**).
+
+- For APA, Harvard, MLA, Vancouver, Chicago and IEEE styles, visit [Zenodo]() and in the right panel at the bottom you will find the Citation section. 
+
+This is an example from APA, the most popular citation style:
+
+<code>Díez-Sánchez, A. (2026). adiezsanchez/microglia_dna_damage: COSMIC (v1.0.0). Zenodo. </code>
+
+<h2>Related publications</h2>
+
+Placeholder for publications citing this pipeline
