@@ -1,5 +1,6 @@
 <h1>Counting Of Spots in Marker Indicator Cells (COSMIC)</h1>
 
+[![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.20526582-blue.svg)](https://doi.org/10.5281/zenodo.20526582)
 [![License](https://img.shields.io/pypi/l/napari-accelerated-pixel-and-object-classification.svg?color=green)](https://github.com/adiezsanchez/intestinal_organoid_yolov8/blob/main/LICENSE)
 [![Development Status](https://img.shields.io/pypi/status/napari-accelerated-pixel-and-object-classification.svg)](https://en.wikipedia.org/wiki/Software_release_life_cycle#Alpha)
 
@@ -160,15 +161,17 @@ In order to play around with analysis parameters and display in detail resulting
 
 <h2>How to cite this pipeline</h2>
 
+[![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.20526582-blue.svg)](https://doi.org/10.5281/zenodo.20526582)
+
 If you are using this pipeline to analyze your bioimage data you can easily include it in your references following the instructions below:
 
 - For machine-readable citation metadata, see `CITATION.cff` in this repository (also surfaced on GitHub under **About → Cite this repository**).
 
-- For APA, Harvard, MLA, Vancouver, Chicago and IEEE styles, visit [Zenodo]() and in the right panel at the bottom you will find the Citation section. 
+- For APA, Harvard, MLA, Vancouver, Chicago and IEEE styles, visit [Zenodo](https://doi.org/10.5281/zenodo.20526582) and in the right panel at the bottom you will find the Citation section. 
 
 This is an example from APA, the most popular citation style:
 
-<code>Díez-Sánchez, A. (2026). adiezsanchez/microglia_dna_damage: COSMIC (v1.0.0). Zenodo. </code>
+<code>Díez-Sánchez, A. (2026). adiezsanchez/microglia_dna_damage: COSMIC (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.20526582</code>
 
 <h2>Related publications</h2>
 
